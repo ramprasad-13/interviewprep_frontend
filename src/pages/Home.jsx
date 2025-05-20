@@ -24,25 +24,55 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-const Home = ({ data, loading, setPage, totalPages }) => {
+const Home = () => {
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState(null); // null means use props.data
+  const [searchResults, setSearchResults] = useState(null); // null means use questions state
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchTotalPages, setSearchTotalPages] = useState(1);
   const [searchCurrentPage, setSearchCurrentPage] = useState(1);
   const [searchError, setSearchError] = useState(null);
+  const limit = 10;
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        setLoading(true);
+        const response = await getAllQuestionsWithoutAuth(currentPage, limit, '');
+        setQuestions(Array.isArray(response.questions) ? response.questions : []);
+        setTotalPages(response.totalPages || 1);
+        setCurrentPage(response.currentPage || currentPage);
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+        setQuestions([]);
+        setTotalPages(1);
+        setCurrentPage(1);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (searchQuery.trim() === '') {
+      fetchQuestions();
+    }
+  }, [currentPage, searchQuery]); // Added searchQuery to dependencies
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
       setSearchResults(null);
       setSearchError(null);
+      setSearchCurrentPage(1);
       return;
     }
+
     const fetchSearchResults = async () => {
       try {
         setSearchLoading(true);
         setSearchError(null);
-        const response = await getAllQuestionsWithoutAuth(searchCurrentPage, 10, searchQuery);
+        const response = await getAllQuestionsWithoutAuth(searchCurrentPage, limit, searchQuery);
         console.log('Search results:', response.questions.map(q => ({ _id: q._id, title: q.title })));
         setSearchResults(Array.isArray(response.questions) ? response.questions : []);
         setSearchTotalPages(response.totalPages || 1);
@@ -64,10 +94,10 @@ const Home = ({ data, loading, setPage, totalPages }) => {
     fetchSearchResults();
   }, [searchQuery, searchCurrentPage]);
 
-  const displayQuestions = searchResults !== null ? searchResults : data;
+  const displayQuestions = searchResults !== null ? searchResults : questions;
   const displayLoading = searchResults !== null ? searchLoading : loading;
   const displayTotalPages = searchResults !== null ? searchTotalPages : totalPages;
-  const displayCurrentPage = searchResults !== null ? searchCurrentPage : data.currentPage || 1;
+  const displayCurrentPage = searchResults !== null ? searchCurrentPage : currentPage;
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -78,7 +108,7 @@ const Home = ({ data, loading, setPage, totalPages }) => {
     if (searchResults !== null) {
       setSearchCurrentPage(pageNumber);
     } else {
-      setPage(pageNumber);
+      setCurrentPage(pageNumber);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
