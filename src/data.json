@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "title": "Reverse a Linked List",
+    "question": "Given a singly linked list, reverse it and return the new head.",
+    "solution": "To reverse a linked list, iterate through the list and change the next pointer of each node to point to its previous node. Use three pointers: prev, curr, and next. Initialize prev as null and curr as head. For each node, save next, set curr.next to prev, move prev to curr, and curr to next. Return prev as the new head. Time complexity: O(n), Space complexity: O(1).",
+    "category": "Data Structures",
+    "difficulty": "Medium",
+    "publishedDate": "2025-01-10",
+    "author":"Ram"
+  },
+  {
+    "id": "2",
+    "title": "Two Sum Problem",
+    "question": "Given an array of integers and a target sum, find two numbers that add up to the target and return their indices.",
+    "solution": "Use a hash map to store numbers and their indices. Iterate through the array, for each number, check if target - number exists in the hash map. If yes, return the current index and the stored index. If not, add the number and its index to the hash map. Time complexity: O(n), Space complexity: O(n).",
+    "category": "Algorithms",
+    "difficulty": "Easy",
+    "publishedDate": "2025-02-15",
+    "author":"Prasad"
+  },
+  {
+    "id": "3",
+    "title": "Binary Tree Inorder Traversal",
+    "question": "Given a binary tree, return the inorder traversal of its nodes' values.",
+    "solution": "Use recursion or an iterative approach with a stack. For recursion, traverse left, visit node, traverse right. For iterative, push all left nodes to stack, pop node, process it, then move to right subtree. Time complexity: O(n), Space complexity: O(h) where h is tree height.",
+    "category": "Data Structures",
+    "difficulty": "Medium",
+    "publishedDate": "2025-03-20",
+    "author":"Sion Joy"
+  },
+  {
+    "id": "4",
+    "title": "Longest Common Subsequence",
+    "question": "Given two strings, find the length of their longest common subsequence.",
+    "solution": "Use dynamic programming. Create a 2D array dp[m+1][n+1] where m and n are lengths of the strings. If characters match, dp[i][j] = dp[i-1][j-1] + 1; else, dp[i][j] = max(dp[i-1][j], dp[i][j-1]). Return dp[m][n]. Time complexity: O(m*n), Space complexity: O(m*n).",
+    "category": "Dynamic Programming",
+    "difficulty": "Hard",
+    "publishedDate": "2025-04-05",
+    "author":"Prassana"
+  },
+  {
+    "id": "5",
+    "title": "Valid Parentheses",
+    "question": "Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
+    "solution": "Use a stack. Iterate through the string. Push opening brackets onto the stack. For closing brackets, check if stack top matches the corresponding opening bracket. If not or stack is empty, return false. After iteration, check if stack is empty. Time complexity: O(n), Space complexity: O(n).",
+    "category": "Algorithms",
+    "difficulty": "Easy",
+    "publishedDate": "2025-05-01",
+    "author":"Pawan Kalyan"
+  }
+]
