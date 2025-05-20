@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import Home from './pages/Home';
 import About from './pages/About';
 import Dashboard from './pages/Dashboard';
@@ -11,11 +9,9 @@ import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
-import ForgotPassword from './pages/ForgotPassword'; // New import
+import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
-import { getAllQuestionsWithoutAuth } from './utils/api';
-import PrivateRoute from './components/PrivateRoute'; // ✅ NEW
-
+import PrivateRoute from './components/PrivateRoute';
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -40,36 +36,12 @@ class ErrorBoundary extends React.Component {
 }
 
 const App = () => {
-  const [questions, setQuestions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const limit = 10;
-
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        setLoading(true);
-        const response = await getAllQuestionsWithoutAuth(page, limit, ''); // Explicit empty query
-        setQuestions(Array.isArray(response.questions) ? response.questions : []);
-        setTotalPages(response.totalPages || 1);
-      } catch (error) {
-        console.error('Error fetching questions:', error);
-        setQuestions([]);
-        setTotalPages(1);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuestions();
-  }, [page]);
-
   return (
     <ErrorBoundary>
       <div style={{ paddingTop: '70px' }}>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home data={questions} loading={loading} setPage={setPage} totalPages={totalPages} />} />
+          <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
@@ -82,7 +54,6 @@ const App = () => {
               <Dashboard />
             </PrivateRoute>
           } />
-
         </Routes>
         <Footer />
       </div>
