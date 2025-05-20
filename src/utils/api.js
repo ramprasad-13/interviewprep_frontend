@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:3000';
+const url = 'https://interviewprep-backend.vercel.app'; //backendUrl
 
 // Automatically attach token from localStorage
 const authHeader = () => {
