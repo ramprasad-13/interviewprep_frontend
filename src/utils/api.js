@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const url = 'https://interviewprep-backend.vercel.app'; //backendUrl
+const url =  'https://interviewprep-backend.vercel.app'; //backendUrl
+//'http://localhost:3000' use it for development
 
 // Automatically attach token from localStorage
 const authHeader = () => {
@@ -13,7 +14,7 @@ const authHeader = () => {
 };
 
 // ------------------- Question APIs -------------------
-export const getAllQuestions = async (page = 1, limit = 10, query = '') => {
+export const getAllQuestions = async (page = 1, limit = 12, query = '') => {
   try {
     const response = await axios.get(`${url}/api/questions`, {
       params: { page, limit, query },
@@ -26,7 +27,7 @@ export const getAllQuestions = async (page = 1, limit = 10, query = '') => {
   }
 };
 
-export const getAllQuestionsWithoutAuth = async (page = 1, limit = 10, query = '') => {
+export const getAllQuestionsWithoutAuth = async (page = 1, limit = 12, query = '') => {
   try {
     const response = await axios.get(`${url}/api/noauth/questions`, {
       params: { page, limit, query },
@@ -216,6 +217,20 @@ export const resetPassword = async ({ email, otp, newPassword }) => {
     return response.data;
   } catch (error) {
     console.error('Error resetting password:', error?.response?.data || error.message);
+    throw error.response?.data || { error: error.message };
+  }
+};
+
+
+// Add this new function inside src/utils/api.js
+
+export const getPublicQuestionById = async (id) => {
+  try {
+    // This calls the new public route we created on the backend
+    const response = await axios.get(`${url}/api/noauth/questions/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching public question by ID:', error?.response?.data || error.message);
     throw error.response?.data || { error: error.message };
   }
 };

@@ -12,6 +12,7 @@ import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import PrivateRoute from './components/PrivateRoute';
+import QuestionPage from './pages/QuestionPage';
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path='/questions/:id' element={<QuestionPage />} />
           <Route path="/dashboard" element={
             <PrivateRoute>
               <Dashboard />
