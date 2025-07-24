@@ -29,5 +29,8 @@ export default [
         { allowConstantExport: true },
       ],
     },
+    globals: {
+    bootstrap: 'readonly', // 'readonly' means it's a global variable that shouldn't be reassigned
+  },
   },
 ]
