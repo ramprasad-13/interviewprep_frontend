@@ -1,4 +1,5 @@
-import React from 'react';
+// app.jsx
+import React, { useEffect } from 'react'; // Import useEffect
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -13,8 +14,12 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import PrivateRoute from './components/PrivateRoute';
 import QuestionPage from './pages/QuestionPage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from './context/useAuth'; // Import useAuth
+import { setLogoutFunction } from './utils/api'; // Import the setter function
 
-// Error Boundary Component
+// Error Boundary Component (keep as is)
 class ErrorBoundary extends React.Component {
   state = { hasError: false, error: null };
 
@@ -37,6 +42,12 @@ class ErrorBoundary extends React.Component {
 }
 
 const App = () => {
+  const { logout } = useAuth(); // Get logout function from context
+
+  useEffect(() => {
+    setLogoutFunction(logout); // Inject logout function into api.js
+  }, [logout]); // Re-run if logout function reference changes (unlikely for context)
+
   return (
     <ErrorBoundary>
       <div style={{ paddingTop: '70px' }}>
@@ -59,6 +70,7 @@ const App = () => {
         </Routes>
         <Footer />
       </div>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </ErrorBoundary>
   );
 };

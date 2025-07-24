@@ -1,7 +1,10 @@
+// signin.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../utils/api'; // ✅ Make sure you're importing 'login', not 'signIn'
+import { login as apiLogin } from '../utils/api'; // Rename imported login to avoid conflict
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useAuth } from '../context/useAuth'; // Import useAuth hook
+import { toast } from 'react-toastify'; // Import toast
 
 const Signin = () => {
   const [email, setEmail] = useState('');
@@ -9,20 +12,26 @@ const Signin = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login: contextLogin } = useAuth(); // Get login from AuthContext
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      const response = await login({ email, password });
+      const response = await apiLogin({ email, password }); // Use renamed apiLogin
 
-      // ✅ Store token in localStorage
-      localStorage.setItem('token', response.token);
-
-      // Optionally: store user info if you return it
-      // localStorage.setItem('user', JSON.stringify(response.user));
-
+      // Store token in localStorage and update context
+      contextLogin(response.token);
+      toast.success('Logged in successfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       navigate('/dashboard');
     } catch (err) {
       setError(

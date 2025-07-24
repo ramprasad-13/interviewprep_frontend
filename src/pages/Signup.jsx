@@ -1,7 +1,9 @@
+// signup.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signUp } from '../utils/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { toast } from 'react-toastify'; // Import toast
 
 const Signup = () => {
   const [form, setForm] = useState({
@@ -39,10 +41,19 @@ const Signup = () => {
     setLoading(true);
     try {
       await signUp({ fullName, gender, age: Number(age), mobileNumber, email, password });
+      toast.success('Account created successfully! Please check your inbox to verify your account.', {
+        position: "top-right",
+        autoClose: 8000, // Keep the toast longer for this important message
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       navigate('/signin');
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to create account. Please try again.');
-      console.log(err);
+      console.error(err); // Use console.error for errors
     } finally {
       setLoading(false);
     }

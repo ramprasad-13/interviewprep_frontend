@@ -182,7 +182,7 @@ const Dashboard = () => {
   const selectedFolderName = selectedFolderId ? folders.find(f => f._id === selectedFolderId)?.name : "Unfiled Questions";
 
   return (
-    <div className="container-fluid mt-4">
+    <div className="min-vh-100 container-fluid mt-4">
       <Row>
         <Col md={3}>
           <Card>
